@@ -5,6 +5,7 @@ const Client = require('../');
 const constant = require('../lib/const');
 const OPCODE = constant.opcode;
 const Long = require('long');
+const expect = require('expect.js');
 
 const DEF_KEY = '__fool2fishTestKey__';
 const DEF_VAL = '__fool2fishTestValue' + Date.now() + '__';
@@ -212,6 +213,25 @@ describe('APIs', function() {
       let rt = yield ocs.increment(DEF_KEY, 1);
       assert(Long.isLong(rt));
       assert(rt.equals(new Long(0, 0, true)));
+    });
+
+    it('should throw if passed in param is illegal', function() {
+      expect(function() {
+        ocs.increment(DEF_KEY, 'step is not a integer')
+      }).to.throwError(/is not a integer/);
+
+      expect(function() {
+        ocs.increment(DEF_KEY, Math.pow(2, 53) + 2);
+      }).to.throwError(/is not a safe integer/);
+
+      expect(function() {
+        ocs.increment(DEF_KEY, -2);
+      }).to.throwError(/must be a non-negative integer/);
+
+      expect(function() {
+        let l = new Long(1);
+        ocs.increment(DEF_KEY, new Long(1, 0));
+      }).to.throwError(/must be an unsigned long/);
     });
   });
 
