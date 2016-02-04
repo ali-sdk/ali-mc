@@ -11,18 +11,14 @@ const DEF_KEY = '__fool2fishTestKey__';
 const DEF_VAL = '__fool2fishTestValue' + Date.now() + '__';
 const KEY2 = '__fool2fishTestKey2__';
 
-const options = {
-  host: 'c97fb3ae659011e4.m.cnhzaligrpzmfpub001.ocs.aliyuncs.com',
-  // host: 'localhost',
-  port: 11211,
-  username: 'c97fb3ae659011e4',
-  password: 'iumTq5691',
-};
 let ocs;
 
 describe('APIs', function() {
   before(function *() {
-    ocs = new Client(options);
+    ocs = new Client({
+      host: 'localhost',
+      port: 11211,
+    });
   });
   after(function(done) {
     ocs.on('close', done);
@@ -38,6 +34,14 @@ describe('APIs', function() {
     });
     after(function *() {
       yield * del(DEF_KEY);
+    });
+
+    it('should get the value by callback', function(done) {
+      ocs.get(DEF_KEY, function(err, value) {
+        assert(!err);
+        assert.equal(value, DEF_VAL);
+        done();
+      });
     });
 
     it('should get the value', function *() {
