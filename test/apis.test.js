@@ -1,15 +1,11 @@
 'use strict';
 
 const assert = require('assert');
-const pedding = require('pedding');
 const Client = require('../');
 const constant = require('../lib/const');
 const OPCODE = constant.opcode;
-const STATUS = constant.status;
 const Long = require('long');
-const extrasUtil = require('../lib/extras-util');
 
-const UNDEF = undefined;
 const DEF_KEY = '__fool2fishTestKey__';
 const DEF_VAL = '__fool2fishTestValue' + Date.now() + '__';
 const KEY2 = '__fool2fishTestKey2__';
@@ -29,7 +25,7 @@ describe('APIs', function() {
   });
   after(function(done) {
     ocs.on('close', done);
-    ocs.quit(function(err) {
+    ocs.close(function(err) {
       assert(!err);
     });
   });
@@ -50,7 +46,7 @@ describe('APIs', function() {
 
     it('should throw when the item dosen\'t exist', function *() {
       try {
-        let rt = yield ocs.get(KEY2);
+        yield ocs.get(KEY2);
         assert(false);
       } catch (e) {
         assert.equal(e.code, 0x0001);
@@ -203,7 +199,7 @@ describe('APIs', function() {
       it('should throw if the value data is the byte values of a 64 bit int', function *() {
         yield ocs.set(DEF_KEY, 123);
         try {
-          let rt = yield ocs.increment(DEF_KEY, 1);
+          yield ocs.increment(DEF_KEY, 1);
           assert(false);
         } catch (e) {
           assert.equal(e.code, 0x0006);
@@ -278,7 +274,7 @@ describe('APIs', function() {
 
   describe('version', function() {
     it('should work', function *() {
-      let rt = yield ocs.version();
+      yield ocs.version();
     });
   });
 
@@ -416,5 +412,5 @@ function wait(s) {
     setTimeout(function() {
       cb();
     }, (s || 2) * 1000);
-  }
+  };
 }

@@ -4,12 +4,12 @@
   "description": "Aliyun OCS(open cache storage) client.",
   "main": "index.js",
   "files": [
-    "lib", "index.js"
+    "index.js", "lib"
   ],
   "scripts": {
     "test": "mocha --check-leaks -t 30000 -r thunk-mocha test/*.test.js",
     "test-cov": "istanbul cover node_modules/.bin/_mocha -- -R dot --check-leaks -t 60000 -r thunk-mocha test/*.test.js",
-    "jshint": "jshint .",
+    "lint": "eslint .",
     "autod": "autod -w --prefix '~' --devprefix '^' -D mocha,autod,should,thunk-mocha,istanbul"
   },
   "repository": {
@@ -43,6 +43,7 @@
     "mocha": "^2.3.4",
     "expect.js": "~0.3.1",
     "thunk-mocha": "^1.0.1",
-    "pedding": "*"
+    "pedding": "*",
+    "eshint": "*"
   }
 }

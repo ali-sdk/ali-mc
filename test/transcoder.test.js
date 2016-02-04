@@ -107,13 +107,13 @@ describe('transcoder', function() {
     });
   });
 
-  it.skip('should compress big data', function(done) {
+  it.skip('should compress big data', function(/* done */) {
 
   });
 });
 
 
-function assertOk(done, o, flags, buf) {
+function assertOk(done, o, flags) {
   encode(o, function(_err, _flags, _buf) {
     assert.equal(flags, _flags);
     decode(_flags, _buf, function(_err, _o) {
