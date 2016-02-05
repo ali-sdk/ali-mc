@@ -25,11 +25,10 @@ describe('exceptions', function() {
       port: 11211,
     });
     ocs.on('error', function(err) {
-      expect(err).to.match(/ECONNREFUSED/);
+      expect(err).to.match(/ENOTFOUND/);
       done();
     });
-    ocs.on('close', function(err) {
-      expect(err).to.match(/ECONNREFUSED/);
+    ocs.on('close', function() {
       done();
     });
   });
