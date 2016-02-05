@@ -221,7 +221,7 @@ describe('APIs', function() {
 
     it('should throw if passed in param is illegal', function() {
       expect(function() {
-        ocs.increment(DEF_KEY, 'step is not a integer')
+        ocs.increment(DEF_KEY, 'step is not a integer');
       }).to.throwError(/is not a integer/);
 
       expect(function() {
@@ -233,7 +233,6 @@ describe('APIs', function() {
       }).to.throwError(/must be a non-negative integer/);
 
       expect(function() {
-        let l = new Long(1);
         ocs.increment(DEF_KEY, new Long(1, 0));
       }).to.throwError(/must be an unsigned long/);
     });
