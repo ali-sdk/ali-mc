@@ -17,7 +17,7 @@ describe('APIs', function() {
   before(function *() {
     ocs = new Client({
       host: 'localhost',
-      port: 11211,
+      port: 11212,
       username: 'admin',
       password: process.env.MEMCACHED_PASS,
     });

@@ -1,6 +1,7 @@
 # ali-ocs
 Aliyun OCS(open cache storage) client.
-A standard implemetation of memcached binary protocol.
+A standard implemetation of memcached binary protocol,
+and is compatible with spymemcached-2.12.0.jar.
 
 
 [![NPM version][npm-image]][npm-url]
@@ -25,23 +26,23 @@ npm install ali-ocs --save
 
 ## Usage
 
-- [new OCSClient(options)](#)
-- [.get(key[, callback])](#)
-- [.set(key, value[, expired, callback])](#)
-- [.add(key, value[, expired, callback])](#)
-- [.replace(key, value[, expired, callback])](#)
-- [.delete(key[, callback])](#)
-- [.increment(key[, step, callback])](#)
-- [.decrement(key[, step, callback])](#)
-- [.flush([expired, callback])](#)
-- [.version([callback])](#)
-- [.append(key, value[, callback])](#)
-- [.prepend(key, value[, callback])](#)
-- [.touch(key[, expired, callback])](#)
-- [.gat(key[, expired, callback])](#)
-- [.close()](#)
-- [Event: 'error'](#)
-- [Event: 'close'](#)
+- [new OCSClient(options)](#new-ocsclientoptions)
+- [.get(key[, callback])](#getkey-callback)
+- [.set(key, value[, expired, callback])](#setkey-value-expired-callback)
+- [.add(key, value[, expired, callback])](#addkey-value-expired-callback)
+- [.replace(key, value[, expired, callback])](#replacekey-value-expired-callback)
+- [.delete(key[, callback])](#deletekey-callback)
+- [.increment(key[, step, callback])](#incrementkey-step-callback)
+- [.decrement(key[, step, callback])](#decrementkey-step-callback)
+- [.flush([expired, callback])](#flushexpired-callback)
+- [.version([callback])](#versioncallback)
+- [.append(key, value[, callback])](#appendkey-value-callback)
+- [.prepend(key, value[, callback])](#prependkey-value-callback)
+- [.touch(key[, expired, callback])](#touchkey-expired-callback)
+- [.gat(key[, expired, callback])](#gatkey-expired-callback)
+- [.close()](#close)
+- [Event: 'error'](#event-error)
+- [Event: 'close'](#event-close)
 
 ### new OCSClient(options)
 
