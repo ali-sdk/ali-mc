@@ -1,9 +1,15 @@
 sudo: true
 language: node_js
-services:
-  - memcached
 node_js:
   - '4'
+  - '5'
+services:
+  - docker
+env:
+  - MEMCACHED_PASS=fool2fish
+before_install:
+  - docker pull tutum/memcached
+  - docker run -d -p 11212:11211 -e MEMCACHED_PASS="$MEMCACHED_PASS" tutum/memcached
 script:
   - "npm run lint && npm run test && npm run test-cov"
 after_script:
