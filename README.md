@@ -1,5 +1,5 @@
-# ali-ocs
-Aliyun OCS(open cache storage) client.
+# ali-mc
+AliCloudDB for Memcache client.
 A standard implemetation of memcached binary protocol,
 and is compatible with spymemcached-2.12.0.jar.
 
@@ -9,24 +9,24 @@ and is compatible with spymemcached-2.12.0.jar.
 [![coverage][cov-image]][cov-url]
 [![David deps][david-image]][david-url]
 
-[npm-image]: https://img.shields.io/npm/v/ali-ocs.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/ali-ocs
-[travis-image]: https://img.shields.io/travis/ali-sdk/ali-ocs.svg?style=flat-square
-[travis-url]: https://travis-ci.org/ali-sdk/ali-ocs
-[cov-image]: http://codecov.io/github/ali-sdk/ali-ocs/coverage.svg?branch=master
-[cov-url]: http://codecov.io/github/ali-sdk/ali-ocs?branch=master
-[david-image]: https://img.shields.io/david/ali-sdk/ali-ocs.svg?style=flat-square
-[david-url]: https://david-dm.org/ali-sdk/ali-ocs
+[npm-image]: https://img.shields.io/npm/v/ali-mc.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/ali-mc
+[travis-image]: https://img.shields.io/travis/ali-sdk/ali-mc.svg?style=flat-square
+[travis-url]: https://travis-ci.org/ali-sdk/ali-mc
+[cov-image]: http://codecov.io/github/ali-sdk/ali-mc/coverage.svg?branch=master
+[cov-url]: http://codecov.io/github/ali-sdk/ali-mc?branch=master
+[david-image]: https://img.shields.io/david/ali-sdk/ali-mc.svg?style=flat-square
+[david-url]: https://david-dm.org/ali-sdk/ali-mc
 
 ## Install
 
 ```
-npm install ali-ocs --save
+npm install ali-mc --save
 ```
 
 ## Usage
 
-- [new OCSClient(options)](#new-ocsclientoptions)
+- [new MCClient(options)](#new-mcclientoptions)
 - [.get(key[, callback])](#getkey-callback)
 - [.set(key, value[, expired, callback])](#setkey-value-expired-callback)
 - [.add(key, value[, expired, callback])](#addkey-value-expired-callback)
@@ -44,9 +44,9 @@ npm install ali-ocs --save
 - [Event: 'error'](#event-error)
 - [Event: 'close'](#event-close)
 
-### new OCSClient(options)
+### new MCClient(options)
 
-Create a OCS client instance.
+Create a mc client instance.
 
 Parameters:
 
@@ -59,8 +59,8 @@ Parameters:
 Example:
 
 ```
-const OCSClient = require('ali-ocs');
-const ocs = new OCSClient({
+const MCClient = require('ali-mc');
+const mc = new MCClient({
   host: ${host},
   port: ${port},
   username: ${username},
@@ -79,13 +79,13 @@ Parameters:
 
 Return:
 
-- {ocs|thunk} returns the ocs instance if the callback is passed in, or return the thunk.
+- {mc|thunk} returns the mc instance if the callback is passed in, or return the thunk.
 
 Example:
 
 ```
 // call with callback
-ocs.get(${someKey}, function(err, value) {
+mc.get(${someKey}, function(err, value) {
   if (err) {
     return console.log(err);
   }
@@ -96,7 +96,7 @@ ocs.get(${someKey}, function(err, value) {
 const co = require('co');
 co(function *() {
   try {
-    let value = yield ocs.get(${someKey});
+    let value = yield mc.get(${someKey});
     console.log(value);
   } catch(err) {
     console.log(err);
@@ -121,7 +121,7 @@ Parameters:
 
 Return:
 
-- {ocs|thunk} returns the ocs instance if the callback is passed in, or return the thunk.
+- {mc|thunk} returns the mc instance if the callback is passed in, or return the thunk.
 
 
 ### .delete(key[, callback])
@@ -135,7 +135,7 @@ Parameters:
 
 Return:
 
-- {ocs|thunk} returns the ocs instance if the callback is passed in, or return the thunk.
+- {mc|thunk} returns the mc instance if the callback is passed in, or return the thunk.
 
 
 ### .increment(key[, step, callback])
@@ -158,18 +158,18 @@ Parameters:
 
 Return:
 
-- {ocs|thunk} returns the ocs instance if the callback is passed in, or return the thunk.
+- {mc|thunk} returns the mc instance if the callback is passed in, or return the thunk.
 
 Example:
 
 ```
-ocs.increment(${someKey}, function(err, value) { ... });
+mc.increment(${someKey}, function(err, value) { ... });
 
 // above is equal to
-ocs.increment(${someKey}, 1, function(err, value) { ... });
+mc.increment(${someKey}, 1, function(err, value) { ... });
 
 // also is equal to
-ocs.increment(${someKey}, {
+mc.increment(${someKey}, {
   step: 1,
 }, function(err, value) { ... });
 ```
@@ -186,7 +186,7 @@ Parameters:
 
 Return:
 
-- {ocs|thunk} returns the ocs instance if the callback is passed in, or return the thunk.
+- {mc|thunk} returns the mc instance if the callback is passed in, or return the thunk.
 
 
 ### .version([callback])
@@ -199,7 +199,7 @@ Parameters:
 
 Return:
 
-- {ocs|thunk} returns the ocs instance if the callback is passed in, or return the thunk.
+- {mc|thunk} returns the mc instance if the callback is passed in, or return the thunk.
 
 ### .append(key, value[, callback])
 ### .prepend(key, value[, callback])
@@ -215,13 +215,13 @@ Parameters:
 
 Return:
 
-- {ocs|thunk} returns the ocs instance if the callback is passed in, or return the thunk.
+- {mc|thunk} returns the mc instance if the callback is passed in, or return the thunk.
 
 Example:
 
 ```
 // appends "!" to the "Hello" key
-ocs.append('Hello', '!', function(err) { ... });
+mc.append('Hello', '!', function(err) { ... });
 ```
 
 ### .touch(key[, expired, callback])
@@ -236,7 +236,7 @@ Parameters:
 
 Return:
 
-- {ocs|thunk} returns the ocs instance if the callback is passed in, or return the thunk.
+- {mc|thunk} returns the mc instance if the callback is passed in, or return the thunk.
 
 ### .gat(key[, expired, callback])
 

@@ -13,9 +13,13 @@ results
 
 node_modules
 npm-debug.log
-coverage/
+coverage
 
 .DS_Store
 
-.idea/
-.npminstall/
+.idea
+.npminstall
+
+test/fixtures/config.json
+mc.iml
+target

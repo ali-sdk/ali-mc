@@ -1,7 +1,7 @@
 {
-  "name": "ali-ocs",
+  "name": "ali-mc",
   "version": "1.0.0",
-  "description": "Aliyun OCS(open cache storage) client.",
+  "description": "AliCloudDB for Memcache client",
   "main": "index.js",
   "files": [
     "index.js", "lib"
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:ali-sdk/ali-ocs.git"
+    "url": "git@github.com:ali-sdk/ali-mc.git"
   },
   "keywords": [
     "memcached",
@@ -26,7 +26,7 @@
   "license": "MIT",
   "homepage": "https://github.com/ali-sdk/ali-ocs",
   "bugs": {
-    "url": "https://github.com/ali-sdk/ali-ocs/issues"
+    "url": "https://github.com/ali-sdk/ali-mc/issues"
   },
   "engines": {
     "node": ">=4.0.0"
@@ -44,6 +44,7 @@
     "expect.js": "~0.3.1",
     "thunk-mocha": "^1.0.1",
     "pedding": "*",
-    "eslint": "~1.10"
+    "eslint": "~1.10",
+    "co": "4"
   }
 }

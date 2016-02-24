@@ -6,40 +6,36 @@ const constant = require('../lib/const');
 const OPCODE = constant.opcode;
 const Long = require('long');
 const expect = require('expect.js');
+const config = require('./fixtures/config');
 
 const DEF_KEY = '__fool2fishTestKey__';
 const DEF_VAL = '__fool2fishTestValue' + Date.now() + '__';
 const KEY2 = '__fool2fishTestKey2__';
 
-let ocs;
+let mc;
 
 describe('APIs', function() {
   before(function *() {
-    ocs = new Client({
-      host: 'localhost',
-      port: 11212,
-      username: 'admin',
-      password: process.env.MEMCACHED_PASS,
-    });
+    mc = new Client(config);
   });
   after(function(done) {
-    ocs.on('close', done);
-    ocs.close(function(err) {
+    mc.on('close', done);
+    mc.close(function(err) {
       assert(!err);
     });
   });
 
   describe('get', function() {
     before(function *() {
-      yield ocs.set(DEF_KEY, DEF_VAL);
-      yield * del(KEY2);
+      yield mc.set(DEF_KEY, DEF_VAL);
+      yield del(KEY2);
     });
     after(function *() {
-      yield * del(DEF_KEY);
+      yield del(DEF_KEY);
     });
 
     it('should get the value by callback', function(done) {
-      ocs.get(DEF_KEY, function(err, value) {
+      mc.get(DEF_KEY, function(err, value) {
         assert(!err);
         assert.equal(value, DEF_VAL);
         done();
@@ -47,13 +43,13 @@ describe('APIs', function() {
     });
 
     it('should get the value', function *() {
-      let rt = yield ocs.get(DEF_KEY);
+      let rt = yield mc.get(DEF_KEY);
       assert.equal(rt, DEF_VAL);
     });
 
     it('should throw when the item dosen\'t exist', function *() {
       try {
-        yield ocs.get(KEY2);
+        yield mc.get(KEY2);
         assert(false);
       } catch (e) {
         assert.equal(e.code, 0x0001);
@@ -63,57 +59,57 @@ describe('APIs', function() {
 
   describe('set', function() {
     before(function *() {
-      yield * del(DEF_KEY);
+      yield del(DEF_KEY);
     });
     after(function *() {
-      yield * del(DEF_KEY);
+      yield del(DEF_KEY);
     });
 
     it('should set the item', function *() {
-      yield ocs.set(DEF_KEY, DEF_VAL);
+      yield mc.set(DEF_KEY, DEF_VAL);
     });
 
     it('should set the Long value', function *() {
       let value = Long.fromValue(12345);
-      yield ocs.set(DEF_KEY, value);
-      let rt = yield ocs.get(DEF_KEY);
+      yield mc.set(DEF_KEY, value);
+      let rt = yield mc.get(DEF_KEY);
       assert(Long.isLong(rt));
       assert(rt.equals(value));
     });
 
     it('should set the Boolean value', function *() {
-      yield ocs.set(DEF_KEY, true);
-      yield * get(DEF_KEY, true);
+      yield mc.set(DEF_KEY, true);
+      yield get(DEF_KEY, true);
     });
 
     it('should set the item with expiration', function *() {
-      yield ocs.set(DEF_KEY, DEF_VAL, 1);
+      yield mc.set(DEF_KEY, DEF_VAL, 1);
       yield wait();
-      yield * getWithErr(DEF_KEY, 0x0001);
+      yield getWithErr(DEF_KEY, 0x0001);
     });
   });
 
   describe('add', function() {
     before(function *() {
-      yield * del(DEF_KEY);
+      yield del(DEF_KEY);
     });
     after(function *() {
-      yield * del(DEF_KEY);
+      yield del(DEF_KEY);
     });
 
     it('should add with expiration if the item dosen\'t exist', function *() {
-      yield ocs.add(DEF_KEY, DEF_VAL, 1);
+      yield mc.add(DEF_KEY, DEF_VAL, 1);
       yield wait();
-      yield * getWithErr(DEF_KEY, 0x0001);
+      yield getWithErr(DEF_KEY, 0x0001);
     });
 
     it('should add if the item dosen\'t exist', function *() {
-      yield ocs.add(DEF_KEY, DEF_VAL);
+      yield mc.add(DEF_KEY, DEF_VAL);
     });
 
     it('should throw if the item exist', function *() {
       try {
-        yield ocs.add(DEF_KEY, DEF_VAL);
+        yield mc.add(DEF_KEY, DEF_VAL);
         assert(false);
       } catch (e) {
         assert.equal(e.code, 0x0002);
@@ -123,26 +119,26 @@ describe('APIs', function() {
 
   describe('replace', function() {
     before(function *() {
-      yield ocs.set(DEF_KEY, DEF_VAL);
+      yield mc.set(DEF_KEY, DEF_VAL);
     });
     after(function *() {
-      yield * del(DEF_KEY);
+      yield del(DEF_KEY);
     });
 
     it('should replace if the item exist', function *() {
-      yield ocs.replace(DEF_KEY, 'another value');
-      yield * get(DEF_KEY, 'another value');
+      yield mc.replace(DEF_KEY, 'another value');
+      yield get(DEF_KEY, 'another value');
     });
 
     it('should replace with expiration if the item exist', function *() {
-      yield ocs.replace(DEF_KEY, 'special value', 1);
+      yield mc.replace(DEF_KEY, 'special value', 1);
       yield wait();
-      yield * getWithErr(DEF_KEY, 0x0001);
+      yield getWithErr(DEF_KEY, 0x0001);
     });
 
     it('should throw if the item dosen\'t exist', function *() {
       try {
-        yield ocs.replace(KEY2, DEF_VAL);
+        yield mc.replace(KEY2, DEF_VAL);
         assert(false);
       } catch (e) {
         assert.equal(e.code, 0x0001);
@@ -152,19 +148,19 @@ describe('APIs', function() {
 
   describe('delete', function() {
     before(function *() {
-      yield ocs.set(DEF_KEY, DEF_VAL);
+      yield mc.set(DEF_KEY, DEF_VAL);
     });
     after(function *() {
-      yield * del(DEF_KEY);
+      yield del(DEF_KEY);
     });
 
     it('should delete the item', function *() {
-      yield ocs.delete(DEF_KEY);
+      yield mc.delete(DEF_KEY);
     });
 
     it('should throw if the item dosen\'t exist', function *() {
       try {
-        yield ocs.delete(DEF_KEY);
+        yield mc.delete(DEF_KEY);
         assert(false);
       } catch (e) {
         assert.equal(e.code, 0x0001);
@@ -174,14 +170,14 @@ describe('APIs', function() {
 
   describe('increment', function() {
     before(function *() {
-      yield * del(DEF_KEY);
+      yield del(DEF_KEY);
     });
     after(function *() {
-      yield * del(DEF_KEY);
+      yield del(DEF_KEY);
     });
 
     it('should return the initial value if the item dose\'t exist', function *() {
-      let rt = yield ocs.increment(DEF_KEY, {
+      let rt = yield mc.increment(DEF_KEY, {
         step: 1,
         initial: 10,
       });
@@ -190,23 +186,23 @@ describe('APIs', function() {
     });
 
     it('should return the incremented value if the item exists', function *() {
-      let rt = yield ocs.increment(DEF_KEY);
+      let rt = yield mc.increment(DEF_KEY);
       assert(Long.isLong(rt));
       assert(rt.equals(new Long(11, 0, true)));
     });
 
     describe('set the value of the counter with add/set/replace', function() {
       it('should be ok if the value data is the ascii presentation of a 64 bit int', function *() {
-        yield ocs.set(DEF_KEY, '123');
-        let rt = yield ocs.increment(DEF_KEY, 1);
+        yield mc.set(DEF_KEY, '123');
+        let rt = yield mc.increment(DEF_KEY, 1);
         assert(Long.isLong(rt));
         assert(rt.equals(new Long(124, 0, true)));
       });
 
       it('should throw if the value data is the byte values of a 64 bit int', function *() {
-        yield ocs.set(DEF_KEY, 123);
+        yield mc.set(DEF_KEY, 123);
         try {
-          yield ocs.increment(DEF_KEY, 1);
+          yield mc.increment(DEF_KEY, 1);
           assert(false);
         } catch (e) {
           assert.equal(e.code, 0x0006);
@@ -215,41 +211,41 @@ describe('APIs', function() {
     });
 
     it('should cause the counter to wrap if it is up to the max value of 64 bit unsigned int', function *() {
-      yield ocs.set(DEF_KEY, '18446744073709551615'); // max 64 bit unsigned integer
-      let rt = yield ocs.increment(DEF_KEY, 1);
+      yield mc.set(DEF_KEY, '18446744073709551615'); // max 64 bit unsigned integer
+      let rt = yield mc.increment(DEF_KEY, 1);
       assert(Long.isLong(rt));
       assert(rt.equals(new Long(0, 0, true)));
     });
 
     it('should throw if passed in param is illegal', function() {
       expect(function() {
-        ocs.increment(DEF_KEY, 'step is not a integer');
+        mc.increment(DEF_KEY, 'step is not a integer');
       }).to.throwError(/is not a integer/);
 
       expect(function() {
-        ocs.increment(DEF_KEY, Math.pow(2, 53) + 2);
+        mc.increment(DEF_KEY, Math.pow(2, 53) + 2);
       }).to.throwError(/is not a safe integer/);
 
       expect(function() {
-        ocs.increment(DEF_KEY, -2);
+        mc.increment(DEF_KEY, -2);
       }).to.throwError(/must be a non-negative integer/);
 
       expect(function() {
-        ocs.increment(DEF_KEY, new Long(1, 0));
+        mc.increment(DEF_KEY, new Long(1, 0));
       }).to.throwError(/must be an unsigned long/);
     });
   });
 
   describe('decrement', function() {
     before(function *() {
-      yield * del(DEF_KEY);
+      yield del(DEF_KEY);
     });
     after(function *() {
-      yield * del(DEF_KEY);
+      yield del(DEF_KEY);
     });
 
     it('should return the initial value if the item dose\'t exist', function *() {
-      let rt = yield ocs.decrement(DEF_KEY, {
+      let rt = yield mc.decrement(DEF_KEY, {
         step: 1,
         initial: 10,
       });
@@ -258,14 +254,14 @@ describe('APIs', function() {
     });
 
     it('should return the decremented value if the item exists', function *() {
-      let rt = yield ocs.decrement(DEF_KEY);
+      let rt = yield mc.decrement(DEF_KEY);
       assert(Long.isLong(rt));
       assert(rt.equals(new Long(9, 0, true)));
     });
 
     it('should will never result in a "negative value" (or cause the counter to "wrap")', function *() {
-      yield ocs.set(DEF_KEY, '1');
-      let rt = yield ocs.decrement(DEF_KEY, 5);
+      yield mc.set(DEF_KEY, '1');
+      let rt = yield mc.decrement(DEF_KEY, 5);
       assert(Long.isLong(rt));
       assert(rt.equals(new Long(0, 0, true)));
     });
@@ -273,8 +269,8 @@ describe('APIs', function() {
 
   describe('flush', function() {
     beforeEach(function *() {
-      yield ocs.set(DEF_KEY, DEF_VAL);
-      yield ocs.set(KEY2, DEF_VAL);
+      yield mc.set(DEF_KEY, DEF_VAL);
+      yield mc.set(KEY2, DEF_VAL);
     });
 
     afterEach(function *() {
@@ -282,44 +278,44 @@ describe('APIs', function() {
     });
 
     it('should flush all items immediately', function *() {
-      yield ocs.flush();
-      yield * getWithErr(DEF_KEY, 0x0001);
-      yield * getWithErr(KEY2, 0x0001);
+      yield mc.flush();
+      yield getWithErr(DEF_KEY, 0x0001);
+      yield getWithErr(KEY2, 0x0001);
     });
 
     it('should flush all items in specified time', function *() {
-      yield ocs.flush(2);
-      yield * get(DEF_KEY, DEF_VAL);
-      yield * get(KEY2, DEF_VAL);
+      yield mc.flush(2);
+      yield get(DEF_KEY, DEF_VAL);
+      yield get(KEY2, DEF_VAL);
       yield wait();
-      yield * getWithErr(DEF_KEY, 0x0001);
-      yield * getWithErr(KEY2, 0x0001);
+      yield getWithErr(DEF_KEY, 0x0001);
+      yield getWithErr(KEY2, 0x0001);
     });
   });
 
   describe('version', function() {
     it('should work', function *() {
-      yield ocs.version();
+      yield mc.version();
     });
   });
 
   describe('append', function() {
     let v = 'aaa';
     before(function *() {
-      yield ocs.set(DEF_KEY, v);
+      yield mc.set(DEF_KEY, v);
     });
     after(function *() {
-      yield * del(DEF_KEY);
+      yield del(DEF_KEY);
     });
 
     it('should work', function *() {
-      yield ocs.append(DEF_KEY, 'bbb');
+      yield mc.append(DEF_KEY, 'bbb');
       get(DEF_KEY, 'aaabbb');
     });
 
     it('should throw if the item dose\'t exist', function *() {
       try {
-        yield ocs.append(KEY2, 'bbb');
+        yield mc.append(KEY2, 'bbb');
         assert(false);
       } catch (e) {
         assert.equal(e.code, 0x0005);
@@ -330,20 +326,20 @@ describe('APIs', function() {
   describe('prepend', function() {
     let v = 'aaa';
     before(function *() {
-      yield ocs.set(DEF_KEY, v);
+      yield mc.set(DEF_KEY, v);
     });
     after(function *() {
-      yield * del(DEF_KEY);
+      yield del(DEF_KEY);
     });
 
     it('should work', function *() {
-      yield ocs.prepend(DEF_KEY, 'bbb');
+      yield mc.prepend(DEF_KEY, 'bbb');
       get(DEF_KEY, 'bbbaaa');
     });
 
     it('should throw if the item dose\'t exist', function *() {
       try {
-        yield ocs.prepend(KEY2, 'bbb');
+        yield mc.prepend(KEY2, 'bbb');
         assert(false);
       } catch (e) {
         assert.equal(e.code, 0x0005);
@@ -353,22 +349,22 @@ describe('APIs', function() {
 
   describe('touch', function() {
     before(function *() {
-      yield ocs.set(DEF_KEY, DEF_VAL);
+      yield mc.set(DEF_KEY, DEF_VAL);
     });
 
     it('should change the item\'s expiration', function *() {
-      yield ocs.touch(DEF_KEY);
+      yield mc.touch(DEF_KEY);
       yield wait();
-      yield * get(DEF_KEY, DEF_VAL);
+      yield get(DEF_KEY, DEF_VAL);
 
-      yield ocs.touch(DEF_KEY, 1);
+      yield mc.touch(DEF_KEY, 1);
       yield wait();
-      yield * getWithErr(DEF_KEY, 0x0001);
+      yield getWithErr(DEF_KEY, 0x0001);
     });
 
     it('should throw if the item dose\'t exist', function *() {
       try {
-        yield ocs.touch(KEY2);
+        yield mc.touch(KEY2);
         assert(false);
       } catch (e) {
         assert.equal(e.code, 0x0001);
@@ -378,24 +374,24 @@ describe('APIs', function() {
 
   describe('gat', function() {
     before(function *() {
-      yield ocs.set(DEF_KEY, 'ABC');
+      yield mc.set(DEF_KEY, 'ABC');
     });
 
     it('should change the item\'s expiration with the value in reponse', function *() {
-      let rt = yield ocs.gat(DEF_KEY);
+      let rt = yield mc.gat(DEF_KEY);
       assert.equal(rt, 'ABC');
       yield wait();
-      yield * get(DEF_KEY, 'ABC');
+      yield get(DEF_KEY, 'ABC');
 
-      rt = yield ocs.gat(DEF_KEY, 1);
+      rt = yield mc.gat(DEF_KEY, 1);
       assert.equal(rt, 'ABC');
       yield wait();
-      yield * getWithErr(DEF_KEY, 0x0001);
+      yield getWithErr(DEF_KEY, 0x0001);
     });
 
     it('should throw if the item dose\'t exist', function *() {
       try {
-        yield ocs.gat(KEY2);
+        yield mc.gat(KEY2);
         assert(false);
       } catch (e) {
         assert.equal(e.code, 0x0001);
@@ -406,16 +402,16 @@ describe('APIs', function() {
 
 
 
-function * get(k, v) {
-  let rt = yield ocs.send(OPCODE.GET, {
+function* get(k, v) {
+  let rt = yield mc.send(OPCODE.GET, {
     key: k,
   });
   assert.equal(rt, v);
 }
 
-function * getWithErr(k, code) {
+function* getWithErr(k, code) {
   try {
-    yield ocs.send(OPCODE.GET, {
+    yield mc.send(OPCODE.GET, {
       key: k,
     });
     assert(false);
@@ -424,9 +420,9 @@ function * getWithErr(k, code) {
   }
 }
 
-function * del(k) {
+function* del(k) {
   try {
-    yield ocs.delete(k);
+    yield mc.delete(k);
   } catch (e) {
     assert(e.code === 0x0001);
   }
