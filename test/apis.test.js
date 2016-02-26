@@ -15,8 +15,9 @@ const KEY2 = '__fool2fishTestKey2__';
 let mc;
 
 describe('APIs', function() {
-  before(function *() {
+  before(function(done) {
     mc = new Client(config);
+    mc.ready(done);
   });
   after(function(done) {
     mc.on('close', done);

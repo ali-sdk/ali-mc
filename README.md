@@ -65,8 +65,17 @@ const mc = new MCClient({
   port: ${port},
   username: ${username},
   password: ${password},
-})
+  // responseTimeout: 50,
+  // logger: console,
+});
+
 ```
+
+### .ready(callback)
+
+If the client is ready for services, callback function will be called.
+
+Otherwise all method will return `The server is not available!`;
 
 ### .get(key[, callback])
 
