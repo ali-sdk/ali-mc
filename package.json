@@ -43,7 +43,8 @@
     "istanbul": "^0.4.1",
     "mocha": "^2.3.4",
     "expect.js": "~0.3.1",
-    "thunk-mocha": "^1.0.1",
+    "thunk-mocha": "^1.0.3",
+    "mochawesome": "~1.2.1",
     "pedding": "*",
     "eslint": "~1.10",
     "co": "4"
