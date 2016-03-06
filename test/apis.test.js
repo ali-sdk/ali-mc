@@ -24,6 +24,49 @@ describe('APIs', function() {
     mc.close(function(err) {
       assert(!err);
     });
+    mc.on('error', function(err) {
+      console.log(err.stack);
+    });
+  });
+
+  describe('bugfix egg/egg#314', function() {
+
+    it('expired 80', function*() {
+      const key = 'expiredKey' + Date.now();
+      const value = Date.now() + '';
+      let rs;
+      try {
+        yield mc.delete(key);
+      } catch (err) {}
+
+      yield wait(0.5);
+      yield mc.set(key, value, 80);
+
+      try {
+        rs = yield mc.get(key);
+      } catch (err) {}
+      assert(rs === value);
+    });
+
+    it('expired 8000000', function*() {
+      const key = 'expiredKey' + Date.now();
+      const value = Date.now() + '';
+      let rs;
+      try {
+        yield mc.delete(key);
+      } catch (err) {}
+
+      yield wait(0.5);
+      yield mc.set(key, value, 8000000);
+
+      try {
+        rs = yield mc.get(key);
+      } catch (err) {
+        console.log(err.stack);
+      }
+      assert(rs === value);
+    });
+
   });
 
   describe('get', function() {
