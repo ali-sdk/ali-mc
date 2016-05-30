@@ -2,14 +2,14 @@
 
 const assert = require('assert');
 const DEF_KEY = '__mcTestKey__';
-const Client = require('../');
+const memcached = require('../');
 
 describe('client.test.js', function() {
 
   let mc;
 
   before(function() {
-    mc = new Client({
+    mc = memcached.createClient({
       port: 11211,
       host: '127.127.127.127',
     });

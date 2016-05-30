@@ -17,9 +17,9 @@ coverage
 
 .DS_Store
 
-.idea
-.npminstall
+.idea/
+.npminstall/
 
 test/fixtures/config.json
 mc.iml
-target
+target/
