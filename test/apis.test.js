@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assert');
-const Client = require('../');
+const memcached = require('../');
 const constant = require('../lib/const');
 const OPCODE = constant.opcode;
 const Long = require('long');
@@ -16,7 +16,7 @@ let mc;
 
 describe('APIs', function() {
   before(function(done) {
-    mc = new Client(config);
+    mc = memcached.createClient(config);
     mc.ready(done);
   });
   after(function(done) {

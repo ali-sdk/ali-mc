@@ -1,10 +1,25 @@
 /**!
- * Copyright(c) 2016 Alibaba Group Holding Limited.
+ * Copyright(c) ali-sdk and other contributors
+ * MIT Licensed
  *
  * Authors:
- *   沉鱼 <chenyu@alipay.com> (https://github.com/fool2fish)
+ *   tangyao <2001-wms@163.com> (http://tangyao.me/)
  */
 
 'use strict';
 
-module.exports = require('./lib/client');
+const assert = require('assert');
+
+/**
+ * Aliyun Memcached client.
+ */
+exports.createClient = function(options) {
+  options = options || {};
+  assert(options.host, 'Host is required!');
+  assert(options.port, 'Port is required!');
+  if (options.protocol !== 'text') {
+    options.protocol = 'binary';
+  }
+  const Client = require(`./lib/${options.protocol}-client`);
+  return new Client(options);
+};
