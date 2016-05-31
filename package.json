@@ -1,6 +1,6 @@
 {
   "name": "ali-mc",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "AliCloudDB for Memcache client",
   "main": "index.js",
   "files": [
@@ -37,7 +37,8 @@
     "is": "^3.1.0",
     "java.io": "^2.1.1",
     "sdk-base": "^1.1.0",
-    "pedding": "*"
+    "pedding": "*",
+    "thenify": "^3.2.0"
   },
   "devDependencies": {
     "autod": "^2.4.1",

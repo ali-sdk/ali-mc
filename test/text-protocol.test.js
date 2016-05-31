@@ -22,7 +22,11 @@ describe('test/text-protocol.test.js', function() {
   });
 
   after(() => {
-    mc.quit();
+    mc.flushAll(1, (err, result) => {
+      assert(!err);
+      assert(result === true);
+      mc.quit();
+    });
   });
 
   it('should set/get success', (done) => {
@@ -181,12 +185,34 @@ describe('test/text-protocol.test.js', function() {
     });
   });
 
-  it('should flushAll success', (done) => {
-    mc.flushAll(1, (err, result) => {
-      assert(!err);
-      assert(result === true);
-      done();
+  describe('generator', function() {
+
+    it('should set/get success', function* () {
+      const value = 'set/get'
+      const result1 = yield mc.set(key, value);
+      assert(result1 === true);
+      const result2 = yield mc.get(key);
+      assert(result2 === value);
     });
+
+    it('should touch success', function* () {
+      const value = 'set/touch'
+      const result1 = yield mc.set(key, value);
+      assert(result1 === true);
+      const result2 = yield mc.touch(key, 1000);
+      assert(result2 === true);
+    });
+
+    it('should incr/decr success', function* () {
+      const value = '10';
+      const result1 = yield mc.set(key, value);
+      assert(result1 === true);
+      const value1 = yield mc.increment(key, 2);
+      assert(value1 === 12);
+      const value2 = yield mc.decrement(key, 4);
+      assert(value2 === 8);
+    });
+
   });
 
 });

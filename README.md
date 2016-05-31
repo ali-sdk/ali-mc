@@ -55,6 +55,7 @@ Parameters:
   - {Integer} port
   - {String} [username]
   - {String} [password]
+  - {String} [protocol]
 
 Example:
 
@@ -65,6 +66,7 @@ const mc = new MCClient({
   port: ${port},
   username: ${username},
   password: ${password},
+  // protocol: ${protocol}, // default is `binary`, also can use `text`
   // responseTimeout: 50,
   // logger: console,
 });
@@ -249,7 +251,7 @@ Return:
 
 ### .gat(key[, expired, callback])
 
-All the same with `.touch()` except this it will return the value of the spcified key.
+All the same with `.touch()` except this it will return the value of the spcified key. `Text protocol not support`
 
 ### .close()
 
