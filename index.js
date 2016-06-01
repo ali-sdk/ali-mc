@@ -9,6 +9,7 @@
 'use strict';
 
 const assert = require('assert');
+const thenify = require('thenify').withCallback;
 
 /**
  * Aliyun Memcached client.
@@ -17,9 +18,15 @@ exports.createClient = function(options) {
   options = options || {};
   assert(options.host, 'Host is required!');
   assert(options.port, 'Port is required!');
-  if (options.protocol !== 'text') {
-    options.protocol = 'binary';
+  if (options.protocol === 'text') {
+    const TextClient = require('./lib/text-client');
+    const client = new TextClient(options);
+    ['get', 'gets', 'set', 'add', 'touch', 'increment', 'decrement', 'replace', 'append', 'prepend', 'version', 'verbosity', 'flushAll', 'flush'].forEach(method => {
+      client[method] = thenify(client[method]);
+    });
+    return client;
+  } else {
+    const BinaryClient = require('./lib/binary-client');
+    return new BinaryClient(options);
   }
-  const Client = require(`./lib/${options.protocol}-client`);
-  return new Client(options);
 };
