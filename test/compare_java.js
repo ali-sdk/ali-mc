@@ -4,9 +4,9 @@ const memcached = require('../');
 const config = require('./fixtures/config');
 const co = require('co');
 
-co(function*() {
+co(function* () {
 
-  let mc = memcached.createClient(config);
+  const mc = memcached.createClient(config);
 
   const value1 = yield mc.get('key1');
   console.log('key1: ', value1);
