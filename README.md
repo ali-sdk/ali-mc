@@ -2,17 +2,23 @@
 
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
-[![coverage][cov-image]][cov-url]
+[![Test coverage][codecov-image]][codecov-url]
 [![David deps][david-image]][david-url]
+[![Known Vulnerabilities][snyk-image]][snyk-url]
+[![npm download][download-image]][download-url]
 
 [npm-image]: https://img.shields.io/npm/v/ali-mc.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/ali-mc
 [travis-image]: https://img.shields.io/travis/ali-sdk/ali-mc.svg?style=flat-square
 [travis-url]: https://travis-ci.org/ali-sdk/ali-mc
-[cov-image]: http://codecov.io/github/ali-sdk/ali-mc/coverage.svg?branch=master
-[cov-url]: http://codecov.io/github/ali-sdk/ali-mc?branch=master
+[codecov-image]: https://codecov.io/gh/ali-sdk/ali-mc/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/ali-sdk/ali-mc
 [david-image]: https://img.shields.io/david/ali-sdk/ali-mc.svg?style=flat-square
 [david-url]: https://david-dm.org/ali-sdk/ali-mc
+[snyk-image]: https://snyk.io/test/npm/ali-mc/badge.svg?style=flat-square
+[snyk-url]: https://snyk.io/test/npm/ali-mc
+[download-image]: https://img.shields.io/npm/dm/ali-mc.svg?style=flat-square
+[download-url]: https://npmjs.org/package/ali-mc
 
 AliCloudDB for Memcache client.
 A standard implemetation of memcached binary protocol,
