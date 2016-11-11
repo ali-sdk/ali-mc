@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assert');
-const memcached = require('../');
+const MemcacheClient = require('../');
 const constant = require('../lib/const');
 const OPCODE = constant.opcode;
 const Long = require('long');
@@ -14,12 +14,13 @@ const KEY2 = '__fool2fishTestKey2__';
 
 let mc;
 
-describe('APIs', function() {
-  before(function(done) {
-    mc = memcached.createClient(config);
+describe('test/apis.test.js', () => {
+  before(done => {
+    mc = new MemcacheClient(config);
     mc.ready(done);
   });
-  after(function(done) {
+
+  after(done => {
     mc.on('close', done);
     mc.close(function(err) {
       assert(!err);
@@ -37,14 +38,14 @@ describe('APIs', function() {
       let rs;
       try {
         yield mc.delete(key);
-      } catch (err) {}
+      } catch (err) {
+        assert(err.message === 'The server returns an error: Key not found');
+      }
 
       yield wait(0.5);
       yield mc.set(key, value, 80);
 
-      try {
-        rs = yield mc.get(key);
-      } catch (err) {}
+      rs = yield mc.get(key);
       assert(rs === value);
     });
 
@@ -54,19 +55,16 @@ describe('APIs', function() {
       let rs;
       try {
         yield mc.delete(key);
-      } catch (err) {}
+      } catch (err) {
+        assert(err.message === 'The server returns an error: Key not found');
+      }
 
       yield wait(0.5);
       yield mc.set(key, value, 8000000);
 
-      try {
-        rs = yield mc.get(key);
-      } catch (err) {
-        console.log(err.stack);
-      }
+      rs = yield mc.get(key);
       assert(rs === value);
     });
-
   });
 
   describe('get', function() {

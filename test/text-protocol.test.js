@@ -30,7 +30,7 @@ describe('test/text-protocol.test.js', function() {
   });
 
   it('should set/get success', (done) => {
-    const value = 'set/get'
+    const value = 'set/get';
     mc.set(key, value, (err, result) => {
       assert(!err);
       assert(result === true);
@@ -188,7 +188,7 @@ describe('test/text-protocol.test.js', function() {
   describe('generator', function() {
 
     it('should set/get success', function* () {
-      const value = 'set/get'
+      const value = 'set/get';
       const result1 = yield mc.set(key, value);
       assert(result1 === true);
       const result2 = yield mc.get(key);
@@ -196,7 +196,7 @@ describe('test/text-protocol.test.js', function() {
     });
 
     it('should touch success', function* () {
-      const value = 'set/touch'
+      const value = 'set/touch';
       const result1 = yield mc.set(key, value);
       assert(result1 === true);
       const result2 = yield mc.touch(key, 1000);
