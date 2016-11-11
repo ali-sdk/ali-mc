@@ -8,8 +8,8 @@
     "lib"
   ],
   "scripts": {
-    "test": "egg-bin test",
-    "test-cov": "egg-bin cov",
+    "test": "egg-bin test -r intelli-espower-loader",
+    "test-cov": "egg-bin cov -r intelli-espower-loader",
     "lint": "eslint lib test *.js",
     "ci": "npm run lint && npm run test-cov",
     "autod": "autod"
@@ -45,9 +45,10 @@
     "autod": "^2.7.1",
     "co": "^4.6.0",
     "egg-bin": "^1.7.0",
-    "eslint": "2",
-    "eslint-config-egg": "2",
-    "expect.js": "^0.3.1",
-    "pedding": "^1.0.0"
+    "eslint": "3",
+    "eslint-config-egg": "3",
+    "intelli-espower-loader": "^1.0.1",
+    "pedding": "^1.0.0",
+    "power-assert": "^1.4.2"
   }
 }

@@ -1,29 +1,29 @@
 'use strict';
 
-const assert = require('assert');
-const DEF_KEY = '__mcTestKey__';
+const assert = require('power-assert');
 const memcached = require('../');
 
-describe('client.test.js', function() {
+const DEF_KEY = '__mcTestKey__';
 
+describe('test/client.test.js', () => {
   let mc;
 
-  before(function() {
+  before(() => {
     mc = memcached.createClient({
-      port: 11211,
-      host: '127.127.127.127',
+      port: 22211,
+      host: '127.0.0.1',
     });
   });
 
-  describe('shoud return `The server is not available!` when connection lost.', function() {
+  after(() => mc.close());
 
-    it('should get the value by callback', function(done) {
-      mc.get(DEF_KEY, function(err) {
+  describe('shoud return `The server is not available!` when connection lost.', () => {
+    it('should get the value by callback', done => {
+      mc.get(DEF_KEY, err => {
         assert(err);
         assert(err.message === 'The server is not available!');
         done();
       });
     });
-
   });
 });

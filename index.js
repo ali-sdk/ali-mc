@@ -13,11 +13,11 @@ BinaryClient.createClient = function createClient(options) {
   if (options.protocol === 'text') {
     const TextClient = require('./lib/text-client');
     const client = new TextClient(options);
-    ['get', 'gets', 'set', 'add', 'touch', 'increment', 'decrement', 'replace', 'append', 'prepend', 'version', 'verbosity', 'flushAll', 'flush'].forEach(method => {
+    [ 'get', 'gets', 'set', 'add', 'touch', 'increment', 'decrement', 'replace', 'append', 'prepend', 'version', 'verbosity', 'flushAll', 'flush' ].forEach(method => {
       client[method] = thenify(client[method]);
     });
     return client;
-  } else {
-    return new BinaryClient(options);
   }
+
+  return new BinaryClient(options);
 };

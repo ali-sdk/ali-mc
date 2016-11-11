@@ -1,34 +1,38 @@
 'use strict';
 
-const expect = require('expect.js');
+const assert = require('power-assert');
 const memcached = require('../');
 const pedding = require('pedding');
 
-describe('exceptions', function() {
-  it('should throw error if no host or port', function() {
-    expect(function() {
-      memcached.createClient({
-      });
-    }).to.throwError(/Host is required!/);
+describe('exceptions', () => {
+  it('should throw error if no host or port', () => {
+    try {
+      memcached.createClient({});
+      throw new Error('should not run this');
+    } catch (err) {
+      assert(/Host is required!/.test(err.message));
+    }
 
-    expect(function() {
-      memcached.createClient({
-        host: 'localhost',
-      });
-    }).to.throwError(/Port is required!/);
+    try {
+      memcached.createClient({ host: 'localhost' });
+      throw new Error('should not run this');
+    } catch (err) {
+      assert(/Port is required!/.test(err.message));
+    }
   });
 
-  it('should emit error when passed unusable host and port in', function(done) {
+  it('should emit error when passed unusable host and port in', done => {
     done = pedding(2, done);
-    let mc = memcached.createClient({
+    const mc = memcached.createClient({
       host: 'non-existed-host',
       port: 11211,
     });
-    mc.on('error', function(err) {
-      expect(err).to.match(/ENOTFOUND/);
+
+    mc.on('error', err => {
+      assert(/ENOTFOUND/.test(err.message));
       done();
     });
-    mc.on('close', function() {
+    mc.on('close', () => {
       done();
     });
   });
