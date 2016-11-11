@@ -1,8 +1,4 @@
 # ali-mc
-AliCloudDB for Memcache client.
-A standard implemetation of memcached binary protocol,
-and is compatible with spymemcached-2.12.0.jar.
-
 
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
@@ -18,9 +14,13 @@ and is compatible with spymemcached-2.12.0.jar.
 [david-image]: https://img.shields.io/david/ali-sdk/ali-mc.svg?style=flat-square
 [david-url]: https://david-dm.org/ali-sdk/ali-mc
 
+AliCloudDB for Memcache client.
+A standard implemetation of memcached binary protocol,
+and is compatible with spymemcached-2.12.0.jar.
+
 ## Install
 
-```
+```bash
 npm install ali-mc --save
 ```
 
@@ -59,9 +59,10 @@ Parameters:
 
 Example:
 
-```
-const MCClient = require('ali-mc');
-const mc = new MCClient({
+```js
+const MemcacheClient = require('ali-mc');
+
+const client = new MemcacheClient({
   host: ${host},
   port: ${port},
   username: ${username},
@@ -70,7 +71,6 @@ const mc = new MCClient({
   // responseTimeout: 50,
   // logger: console,
 });
-
 ```
 
 ### .ready(callback)
@@ -274,8 +274,9 @@ Emitted when the client closes.
 - [memcached.org](http://memcached.org/)
 - [memecached binary protocol](https://cloud.github.com/downloads/memcached/memcached/protocol-binary.txt)
 
----
+## License
 
+```
 The MIT License (MIT)
 Copyright (c) 2016 fool2fish <fool2fish@gmail.com> and other contributors
 
@@ -296,3 +297,4 @@ THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
+```

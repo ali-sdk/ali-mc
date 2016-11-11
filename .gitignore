@@ -20,6 +20,5 @@ coverage
 .idea/
 .npminstall/
 
-test/fixtures/config.json
 mc.iml
 target/

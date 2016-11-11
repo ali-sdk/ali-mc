@@ -1,20 +1,12 @@
-/**!
- * Copyright(c) ali-sdk and other contributors
- * MIT Licensed
- *
- * Authors:
- *   tangyao <2001-wms@163.com> (http://tangyao.me/)
- */
-
 'use strict';
 
 const assert = require('assert');
 const thenify = require('thenify').withCallback;
+const BinaryClient = require('./lib/binary-client');
 
-/**
- * Aliyun Memcached client.
- */
-exports.createClient = function(options) {
+module.exports = BinaryClient;
+
+BinaryClient.createClient = function createClient(options) {
   options = options || {};
   assert(options.host, 'Host is required!');
   assert(options.port, 'Port is required!');
@@ -26,7 +18,6 @@ exports.createClient = function(options) {
     });
     return client;
   } else {
-    const BinaryClient = require('./lib/binary-client');
     return new BinaryClient(options);
   }
 };

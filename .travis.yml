@@ -1,16 +1,12 @@
-sudo: true
+sudo: false
 language: node_js
 node_js:
+  - '7'
+  - '6'
   - '4'
-  - '5'
 services:
-  - docker
-env:
-  - MEMCACHED_PASS=fool2fish
-before_install:
-  - docker pull tutum/memcached
-  - docker run -d -p 11212:11211 -e MEMCACHED_PASS="$MEMCACHED_PASS" tutum/memcached
+  - memcached
 script:
-  - "npm run lint && npm run test && npm run test-cov"
+  - 'npm run ci'
 after_script:
-  - "npm i codecov.io && cat ./coverage/coverage.json | ./node_modules/codecov.io/bin/codecov.io.js"
+  - 'npm i codecov && codecov'
